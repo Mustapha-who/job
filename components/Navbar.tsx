@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useSession } from "next-auth/react";
 
 import {
   NavigationMenu,
@@ -13,8 +14,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
+import { logout } from "@/lib/auth"
 
 export function Navbar() {
+  const {data : session} = useSession();
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
@@ -25,34 +28,41 @@ export function Navbar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <Link href="/jobs" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Browse Jobs
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink href="/jobs" className={navigationMenuTriggerStyle()}>
+                  Browse Jobs
+                </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/post-job" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Post a Job
-                  </NavigationMenuLink>
-                </Link>
+               {session ? (
+                 <NavigationMenuLink href="/post-job" className={navigationMenuTriggerStyle()}>
+                   Post a Job
+                 </NavigationMenuLink>
+               ) : null}
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/dashboard" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Dashboard
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink href="/dashboard" className={navigationMenuTriggerStyle()}>
+                  Dashboard
+                </NavigationMenuLink>
               </NavigationMenuItem>
+              {session ? (
+                <NavigationMenuItem>
+                  <form action={logout}>
+                    <Button type="submit" variant="outline" className={navigationMenuTriggerStyle()}>
+                      Sign Out
+                    </Button>
+                  </form>
+                </NavigationMenuItem>
+              ) : (
+                <NavigationMenuItem>
+                  <NavigationMenuLink href="/auth/signin" className={navigationMenuTriggerStyle()}>
+                    Sign In
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              )}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="ml-auto flex items-center space-x-4">
-          <Button asChild>
-            <Link href="/auth/signin">Sign In</Link>
-          </Button>
-        </div>
+       
       </div>
     </div>
   )
