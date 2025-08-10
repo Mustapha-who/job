@@ -34,7 +34,7 @@ export function Navbar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                {session ? (
-                 <NavigationMenuLink href="/post-job" className={navigationMenuTriggerStyle()}>
+                 <NavigationMenuLink href="/jobs/post" className={navigationMenuTriggerStyle()}>
                    Post a Job
                  </NavigationMenuLink>
                ) : null}
