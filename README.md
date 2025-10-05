@@ -1,4 +1,4 @@
-# 💼 Job Board App
+# 💼💼 Job Board App
 
 ## 📌 About
 A job posting application built with **Next.js**, **Prisma**, and **PostgreSQL**.  
